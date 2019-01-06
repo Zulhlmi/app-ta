@@ -21,20 +21,10 @@
                                         <img src="{{ $featured_artist['img'] }}" alt="">
                                         <div class="ms_main_overlay">
                                             <div class="ms_box_overlay"></div>
-                                            <div class="ms_more_icon">
-                                                <img src="images/svg/more.svg" alt="">
-                                            </div>
-                                            <ul class="more_option">
-                                                <li><a href="#"><span class="opt_icon"><span class="icon icon_playlst"></span></span>@lang('buttons.addToPlaylist')</a></li>
-                                                <li><a href="#"><span class="opt_icon"><span class="icon icon_share"></span></span>@lang('buttons.share')</a></li>
-                                            </ul>
-                                            <div class="ms_play_icon">
-                                                <img src="images/svg/play.svg" alt="">
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="ms_rcnt_box_text">
-                                        <h3><a href="{{ $featured_artist['id'] }}">{{ $featured_artist['name'] }}</a></h3>
+                                        <h3><a href="{{ route('artist.detail', ['id' => $featured_artist['id']]) }}">{{ $featured_artist['name'] }}</a></h3>
                                     </div>
                                 </div>
                             </div>

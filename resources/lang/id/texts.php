@@ -26,4 +26,7 @@ return [
     'addToFavouriteSuccess' => 'Berhasil menambahkan lagu ke favourite',
     'addToQueueSuccess' => 'Berhasil menambahkan lagu ke antrian',
     'historySong' => 'Riwayat lagu yang sudah didengerkan',
+    'listSongByAlbum' => 'Daftar lagu dari album " :album "',
+    'listSongByArtist' => 'Daftar lagu dari artis " :artis "',
+    'listSongByGenre' => 'Daftar lagu dari genre " :genre "',
 ];

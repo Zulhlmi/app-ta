@@ -41,10 +41,13 @@ Route::group(['middleware' => ['auth', 'view.variable']], function () {
     Route::post('profile', 'Web\ProfileController@update');
 
     Route::get('artist', 'Web\ArtistController@index')->name('artist');
+    Route::get('artist/{id}', 'Web\ArtistController@show')->name('artist.detail');
 
     Route::get('genre', 'Web\GenreController@index')->name('genre');
+    Route::get('genre/{id}', 'Web\GenreController@show')->name('genre.detail');
 
     Route::get('album', 'Web\AlbumController@index')->name('album');
+    Route::get('album/{id}', 'Web\AlbumController@show')->name('album.detail');
 
     Route::get('toptrack', 'Web\TopTrackController@index')->name('toptrack');
 

@@ -17,34 +17,39 @@
         </div>
         <div class="swiper-container">
             <div class="swiper-wrapper">
-
-                <div class="swiper-slide">
-                    <div class="ms_rcnt_box">
-                        <div class="ms_rcnt_box_img">
-                            <img src="images/music/r_music4.jpg" alt="">
-                            <div class="ms_main_overlay">
-                                <div class="ms_box_overlay"></div>
-                                <div class="ms_more_icon">
-                                    <img src="images/svg/more.svg" alt="">
-                                </div>
-                                <ul class="more_option">
-                                    <li><a href="#"><span class="opt_icon"><span class="icon icon_fav"></span></span>@lang('buttons.addToFavourite')</a></li>
-                                    <li><a href="#"><span class="opt_icon"><span class="icon icon_queue"></span></span>@lang('buttons.addToQueue')</a></li>
-                                    <li><a href="#"><span class="opt_icon"><span class="icon icon_playlst"></span></span>@lang('buttons.addToPlaylist')</a></li>
-                                    <li><a href="#"><span class="opt_icon"><span class="icon icon_share"></span></span>@lang('buttons.share')</a></li>
-                                </ul>
-                                <div class="ms_play_icon">
-                                    <img src="images/svg/play.svg" alt="">
+                @if (!empty($histories))
+                    @foreach($histories as $history)
+                        @php
+                            $song = $history->getSong()
+                        @endphp
+                    <div class="swiper-slide">
+                        <div class="ms_rcnt_box">
+                            <div class="ms_rcnt_box_img">
+                                <img src="{{ $song->getImg() ? $song->getImg()->getFullPath() : null }}" alt="">
+                                <div class="ms_main_overlay">
+                                    <div class="ms_box_overlay"></div>
+                                    {{--<div class="ms_more_icon">--}}
+                                        {{--<img src="images/svg/more.svg" alt="">--}}
+                                    {{--</div>--}}
+                                    {{--<ul class="more_option">--}}
+                                        {{--<li><a href="#"><span class="opt_icon"><span class="icon icon_fav"></span></span>@lang('buttons.addToFavourite')</a></li>--}}
+                                        {{--<li><a href="#"><span class="opt_icon"><span class="icon icon_queue"></span></span>@lang('buttons.addToQueue')</a></li>--}}
+                                        {{--<li><a href="#"><span class="opt_icon"><span class="icon icon_playlst"></span></span>@lang('buttons.addToPlaylist')</a></li>--}}
+                                        {{--<li><a href="#"><span class="opt_icon"><span class="icon icon_share"></span></span>@lang('buttons.share')</a></li>--}}
+                                    {{--</ul>--}}
+                                    {{--<div class="ms_play_icon">--}}
+                                        {{--<img src="images/svg/play.svg" alt="">--}}
+                                    {{--</div>--}}
                                 </div>
                             </div>
-                        </div>
-                        <div class="ms_rcnt_box_text">
-                            <h3><a href="#">Dark Alley Acoustic</a></h3>
-                            <p>Ava Cornish & Brian Hill</p>
+                            <div class="ms_rcnt_box_text">
+                                <h3><a href="#">{{ $song->getName() ? $song->getName() : null }}</a></h3>
+                                <p>{{ $song->getArtist() ? $song->getArtist()->getName() : null }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-
+                    @endforeach
+                @endif
             </div>
         </div>
         <!-- Add Arrows -->
@@ -123,16 +128,6 @@
                             <img src="{{ $artist['img'] }}" alt="">
                             <div class="ms_main_overlay">
                                 <div class="ms_box_overlay"></div>
-                                <div class="ms_more_icon">
-                                    <img src="images/svg/more.svg" alt="">
-                                </div>
-                                <ul class="more_option">
-                                    <li><a href="#"><span class="opt_icon"><span class="icon icon_playlst"></span></span>@lang('buttons.addToPlaylist')</a></li>
-                                    <li><a href="#"><span class="opt_icon"><span class="icon icon_share"></span></span>@lang('buttons.share')</a></li>
-                                </ul>
-                                <div class="ms_play_icon">
-                                    <img src="images/svg/play.svg" alt="">
-                                </div>
                             </div>
                         </div>
                         <div class="ms_rcnt_box_text">
@@ -219,20 +214,10 @@
                                 <img src="{{ $album['img'] }}">
                                 <div class="ms_main_overlay">
                                     <div class="ms_box_overlay"></div>
-                                    <div class="ms_more_icon">
-                                        <img src="images/svg/more.svg" alt="">
-                                    </div>
-                                    <ul class="more_option">
-                                        <li><a href="#"><span class="opt_icon"><span class="icon icon_playlst"></span></span>@lang('buttons.addToPlaylist')</a></li>
-                                        <li><a href="#"><span class="opt_icon"><span class="icon icon_share"></span></span>@lang('buttons.share')</a></li>
-                                    </ul>
-                                    <div class="ms_play_icon">
-                                        <img src="images/svg/play.svg" alt="">
-                                    </div>
                                 </div>
                             </div>
                             <div class="ms_rcnt_box_text">
-                                <h3><a href="#">{{ $album['title'] }}</a></h3>
+                                <h3><a href="#">{{ $album['name'] }}</a></h3>
                                 <p>{{ $album['artist'] }}</p>
                             </div>
                         </div>
@@ -263,12 +248,6 @@
                                     <img src="{{ $genre['img'] }}" alt="">
                                     <div class="ms_main_overlay">
                                         <div class="ms_box_overlay"></div>
-                                        <div class="ms_more_icon">
-                                            <img src="images/svg/more.svg" alt="">
-                                        </div>
-                                        <ul class="more_option">
-                                            <li><a href="#"><span class="opt_icon">@lang('buttons.viewMore')</a></li>
-                                        </ul>
                                     </div>
                                 </div>
                                 <div class="ms_rcnt_box_text">

@@ -486,7 +486,6 @@
             });
 
             function addRecentlyPlaylist(id){
-                console.log(id);
                 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
                     type: "POST",
@@ -494,6 +493,7 @@
                     data: {_token: CSRF_TOKEN},
                     dataType: 'JSON',
                     success: function(result) {
+                        console.log(result);
                     }
                 });
             }

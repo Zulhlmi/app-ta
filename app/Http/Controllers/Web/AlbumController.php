@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Helpers\AlbumHelper;
+use App\Helpers\SongHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -51,7 +52,12 @@ class AlbumController extends Controller
      */
     public function show($id)
     {
-        //
+        $songs = SongHelper::getSongByAlbumId($id);
+        $album = AlbumHelper::getById($id);
+        return view('web.albumdetail', [
+            'songs' => $songs,
+            'album' => $album
+        ]);
     }
 
     /**

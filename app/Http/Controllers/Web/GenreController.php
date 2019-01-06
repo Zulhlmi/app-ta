@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Helpers\GenreHelper;
+use App\Helpers\SongHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -50,7 +51,12 @@ class GenreController extends Controller
      */
     public function show($id)
     {
-        //
+        $songs = SongHelper::getSongByGenreId($id);
+        $genre = GenreHelper::getById($id);
+        return view('web.genredetail', [
+            'songs' => $songs,
+            'genre' => $genre
+        ]);
     }
 
     /**

@@ -31,4 +31,10 @@ class ArtistHelper
         }
         return $featuredArtistListData;
     }
+
+    public static function getById($artist_id)
+    {
+        $artist = SongArtist::getById($artist_id, 1);
+        return $artist;
+    }
 }

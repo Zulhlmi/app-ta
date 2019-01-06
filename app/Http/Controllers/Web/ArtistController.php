@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Helpers\ArtistHelper;
+use App\Helpers\SongHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -51,7 +52,12 @@ class ArtistController extends Controller
      */
     public function show($id)
     {
-        //
+        $songs = SongHelper::getSongByArtistId($id);
+        $artist = ArtistHelper::getById($id);
+        return view('web.artistdetail', [
+            'songs' => $songs,
+            'artist' => $artist
+        ]);
     }
 
     /**

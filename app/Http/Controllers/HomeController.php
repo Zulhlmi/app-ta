@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\AdHelper;
 use App\Helpers\AlbumHelper;
 use App\Helpers\ArtistHelper;
+use App\Helpers\HistoryHelper;
 use App\Helpers\GenreHelper;
 use App\Helpers\SongHelper;
 use Illuminate\Http\Request;
@@ -40,6 +41,7 @@ class HomeController extends Controller
         $topArtist = ArtistHelper::getArtist();
         $topWeekly = SongHelper::getSong();
         $topGenre = GenreHelper::getGenre();
+        $histories = HistoryHelper::getHistory();
 
         return view('home', [
             'ads' => $ads,
@@ -47,7 +49,8 @@ class HomeController extends Controller
             'newRealease' => $newRilis,
             'topArtist' => $topArtist,
             'topWeekly' => $topWeekly,
-            'genres' => $topGenre
+            'genres' => $topGenre,
+            'histories' => $histories
         ]);
     }
 }

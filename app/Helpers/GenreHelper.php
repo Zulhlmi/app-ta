@@ -33,4 +33,10 @@ class GenreHelper
         }
         return $genres;
     }
+
+    public static function getById($genre_id)
+    {
+        $genre = SongGenre::getById($genre_id, 1);
+        return $genre;
+    }
 }

@@ -21,12 +21,20 @@ class HistoryHelper
         $recentlyPlayedCollections = new DataObject\Fieldcollection();
         $userPimcore = UserPimcore::getById(auth()->id(), 1);
         $songObj = Song::getById($songId, 1);
-        $recentlyPlaylist = $userPimcore->getQueue() ? $userPimcore->getQueue()->getItems() : null;
+
+        $counterListened = $songObj->getCounter() ? $songObj->getCounter() : 0;
+        $newCounterListened = $counterListened + 1;
+        $songObj->setCounter($newCounterListened);
+        $songObj->save();
+
+        $recentlyPlaylist = $userPimcore->getRecentlyPlayed() ? $userPimcore->getRecentlyPlayed()->getItems() : null;
         if ($recentlyPlaylist) {
             foreach ($recentlyPlaylist as $recentlyPlayed) {
-                $recentlyPlayedCollection = new DataObject\Fieldcollection\Data\RecentlyPlayed();
-                $recentlyPlayedCollection->setSong($recentlyPlayed->getSong());
-                $recentlyPlayedCollections->add($recentlyPlayedCollection);
+                if ($recentlyPlayed->getSong()->getId() != $songId) {
+                    $recentlyPlayedCollection = new DataObject\Fieldcollection\Data\RecentlyPlayed();
+                    $recentlyPlayedCollection->setSong($recentlyPlayed->getSong());
+                    $recentlyPlayedCollections->add($recentlyPlayedCollection);
+                }
             }
         }
         $recentlyPlayedCollection = new DataObject\Fieldcollection\Data\RecentlyPlayed();

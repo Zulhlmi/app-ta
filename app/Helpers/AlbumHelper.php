@@ -32,4 +32,10 @@ class AlbumHelper
         }
         return $featuredAlbumListData;
     }
+
+    public static function getById($album_id)
+    {
+        $album = SongAlbum::getById($album_id, 1);
+        return $album;
+    }
 }

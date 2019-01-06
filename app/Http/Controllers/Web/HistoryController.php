@@ -21,7 +21,7 @@ class HistoryController extends Controller
             foreach ($histories as $history) {
                 $songObj = $history->getSong();
                 $historydata[] = [
-                    'name' => $songObj->getName(),
+                    'title' => $songObj->getName(),
                     'image' => $songObj->getImg() ? $songObj->getImg()->getFullPath() : null,
                     'mp3' => $songObj->getFile() ? $songObj->getFile()->getFullPath() : null,
                     'artist' => $songObj->getArtist() ? $songObj->getArtist()->getName() : null

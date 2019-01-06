@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="ms_heading">
-                            <h1>@lang('texts.weeklyTop', ['number' =>count($songs)])</h1>
+                            <h1>@lang('texts.listSongByGenre', ['genre' => $genre->getName()])</h1>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 padding_right40">
@@ -25,7 +25,7 @@
                                             <div class="ms_song_overlay">
                                             </div>
                                             <div class="ms_play_icon">
-                                                <img src="images/svg/play.svg">
+                                                <img src="/images/svg/play.svg">
                                             </div>
                                         </div>
                                         <div class="w_tp_song_name">
@@ -37,7 +37,7 @@
                                 <div class="weekly_right">
                                     {{--<span class="w_song_time">5:10</span>--}}
                                     <span class="ms_more_icon" data-other="1">
-										<img src="images/svg/more.svg" alt="">
+										<img src="/images/svg/more.svg" alt="">
 									</span>
                                 </div>
                                 <ul class="more_option">
@@ -55,11 +55,4 @@
             </div>
         </div>
     @endif
-
 @endsection
-
-@push('scripts')
-    <script>
-
-    </script>
-@endpush
