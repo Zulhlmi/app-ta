@@ -73,7 +73,7 @@
                                     <span class="w_top_no">
 										{{ $key + 1 }}
 									</span>
-                            <div class="w_top_song">
+                            <div class="w_top_song" song-data='@json($top)'>
                                 <div class="w_tp_song_img">
                                     <img src="{{ $top['image'] }}" alt="" class="img-fluid">
                                     <div class="ms_song_overlay">

@@ -19,7 +19,7 @@
                                     <span class="w_top_no">
 										{{ $key + 1 }}
 									</span>
-                                    <div class="w_top_song">
+                                    <div class="w_top_song" song-data='@json($song)'>
                                         <div class="w_tp_song_img">
                                             <img src="{{ $song['image'] }}">
                                             <div class="ms_song_overlay">
@@ -43,7 +43,7 @@
                                 <ul class="more_option">
                                     <li><a href="#" class="addToFavouriteAction" song-id="{{ $song['id'] }}"><span class="opt_icon"><span class="icon icon_fav"></span></span>@lang('buttons.addToFavourite')</a></li>
                                     <li><a href="#" class="addToQueueAction" song-id="{{ $song['id'] }}" data-json='@json($song)'><span class="opt_icon"><span class="icon icon_queue"></span></span>@lang('buttons.addToQueue')</a></li>
-                                    <li><a href="#"><span class="opt_icon"><span class="icon icon_playlst"></span></span>@lang('buttons.addToPlaylist')</a></li>
+                                    <li><a href="#" class="addToPlaylistAction" song-id="{{ $song['id'] }}" data-json='@json($song)'><span class="opt_icon"><span class="icon icon_playlst"></span></span>@lang('buttons.addToPlaylist')</a></li>
                                     <li><a href="#"><span class="opt_icon"><span class="icon icon_share"></span></span>@lang('buttons.share')</a></li>
                                 </ul>
                             </div>

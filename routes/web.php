@@ -55,6 +55,8 @@ Route::group(['middleware' => ['auth', 'view.variable']], function () {
 
     Route::get('history', 'Web\HistoryController@index')->name('history');
 
+    Route::get('playlist', 'Web\PlaylistController@index')->name('playlist');
+
     Route::group(['prefix' => 'interaction'], function () {
         Route::get('/', function () {
             return Response('Test', 201);
@@ -62,6 +64,8 @@ Route::group(['middleware' => ['auth', 'view.variable']], function () {
 
         Route::post('favourite/{song_id?}', 'Web\InteractionController@favourite')->name('web.interaction.favourite');
         Route::post('queue/{song_id?}', 'Web\InteractionController@queue')->name('web.interaction.queue');
+        Route::post('queue/remove/{i?}', 'Web\InteractionController@removeQueue')->name('web.interaction.remove.queue');
+        Route::post('playlist/{song_id?}', 'Web\InteractionController@playlist')->name('web.interaction.playlist');
         Route::post('play/{song_id?}', 'Web\InteractionController@play')->name('web.interaction.play');
         Route::post('search', 'Web\InteractionController@search')->name('web.interaction.search');
     });

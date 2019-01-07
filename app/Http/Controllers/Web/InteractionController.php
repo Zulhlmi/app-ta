@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Helpers\FavouriteHelper;
 use App\Helpers\HistoryHelper;
+use App\Helpers\PlaylistHelper;
 use App\Helpers\QueueHelper;
 use Pimcore\Model\DataObject\Song;
 use Validator;
@@ -134,6 +135,34 @@ class InteractionController extends Controller
         return response($song_id, 200);
     }
 
+    public function removeQueue($i)
+    {
+        $remove = QueueHelper::remove($i);
+        if ($remove) {
+            return response([
+                'message' => 'Berhasil menghapus'
+            ]);
+        }
+        return response($i, 200);
+    }
+
+    public function playlist($song_id)
+    {
+        $validator = Validator::make(['song_id' => $song_id], [
+            'song_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response($validator->errors(), 200);
+        }
+        $addToQueueCollections = PlaylistHelper::checkAndAdd($song_id);
+        if ($addToQueueCollections) {
+            return response([
+                'message' => __('texts.addToQueueSuccess')
+            ]);
+        }
+        return response($song_id, 200);
+    }
+
 
     public function search(Request $request)
     {
@@ -145,16 +174,20 @@ class InteractionController extends Controller
         }
         $result = [];
         $songLists = new Song\Listing();
-        $songLists->setCondition('name = ?', [$request->keyword]);
+        $songLists->setCondition('name like ?', ["%".$request->keyword."%"]);
         $songLists->load();
         if (!empty($songLists->getObjects())) {
             foreach ($songLists->getObjects() as $object) {
                 $result[] = [
-                    'name' => $object->getName(),
-                    'img' => $object->getImg() ? \Pimcore\Tool::getHostUrl('https').$object->getImg()->getThumbnail() : ''
+                    'id' => $object->getId(),
+                    'title' => $object->getName(),
+                    'artist' => $object->getArtist()->getName(),
+                    'image' => $object->getImg() ? \Pimcore\Tool::getHostUrl('https').$object->getImg()->getThumbnail() : '',
+                    'mp3' => $object->getFile() ? $object->getFile()->getFullPath() : null
                 ];
             }
         }
+
         $datas = [
             'keyword' => $request->keyword,
             'result' => $result

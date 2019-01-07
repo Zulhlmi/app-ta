@@ -1,17 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
+    @if ($songs)
         <div class="ms_weekly_wrapper">
             <div class="ms_weekly_inner">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="ms_heading">
-                            <h1>Hasil pencarian ' {{ $keyword }} ' adalah @if(!empty($result)) {{ count($result) }} @else {{ 0 }} @endif</h1>
+                            <h1>Daftar Putar</h1>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 padding_right40">
-                        @if ($result)
-                        @foreach($result as $key => $song)
+                        @foreach($songs as $key => $songx)
+                            @php
+                                $songObj = $songx->getSong();
+                                $song = [];
+                                $song['id'] = $songObj->getId();
+                                $song['image'] = $songObj->getImg() ? $songObj->getImg()->getFullPath() : null;
+                                $song['title'] = $songObj->getName() ? $songObj->getName() : null;
+                                $song['artist'] = $songObj->getArtist() ? $songObj->getArtist()->getName() : null;
+                                $song['mp3'] = $songObj->getFile() ? $songObj->getFile()->getFullPath() : 'http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3';
+                            @endphp
                             {{--ms_active_play--}}
                             <div class="ms_weekly_box">
                                 <div class="weekly_left">
@@ -48,12 +57,16 @@
                             </div>
                             <div class="ms_divider"></div>
                         @endforeach
-                        @endif
+
                     </div>
                 </div>
             </div>
         </div>
-
-
-
+    @endif
 @endsection
+
+@push('scripts')
+    <script>
+
+    </script>
+@endpush

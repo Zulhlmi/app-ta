@@ -41,6 +41,32 @@ class QueueHelper
         return true;
     }
 
+    public static function remove($index)
+    {
+        $queueCollections = new DataObject\Fieldcollection();
+        $userPimcore = UserPimcore::getById(auth()->id(), 1);
+        $queueList = $userPimcore->getQueue() ? $userPimcore->getQueue()->getItems() : null;
+        if ($queueList) {
+            $iArray = 0;
+            foreach ($queueList as $queue) {
+                if ($index != $iArray) {
+                    $queueCollection = new DataObject\Fieldcollection\Data\Queue();
+                    $queueCollection->setSong($queue->getSong());
+                    $queueCollections->add($queueCollection);
+                }
+                $iArray++;
+            }
+        }
+        try {
+            $userPimcore->setQueue($queueCollections);
+            $userPimcore->save();
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
     public static function getQueues()
     {
         $queueCollections = null;

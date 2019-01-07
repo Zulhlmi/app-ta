@@ -119,12 +119,12 @@
                     </ul>
                     <ul class="nav_playlist">
                         <li>
-                            <a href="feature_playlist.html">
+                            <a href="{{ route('playlist') }}" class="{{ Request::is('playlist') ? 'active' : '' }}" title="@lang('menus.playlist')">
                                 <span class="nav_icon">
                                     <span class="icon icon_fe_playlist"></span>
                                 </span>
                                 <span class="nav_text">
-                                    featured playlist
+                                    @lang('menus.playlist')
                                 </span>
                             </a>
                         </li>
@@ -314,6 +314,11 @@
 
     <input type="hidden" value="0" id="showAds">
 
+    <script>
+        var baseUrl = "{{ Url('/') }}";
+        var removeUrl = "{{ route('web.interaction.remove.queue') }}";
+    </script>
+
     <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.js') }}" ></script>
     <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
@@ -337,6 +342,7 @@
                 cssSelectorAncestor: "#jp_container_1"
             }, @json($userPlaylist), {
                 playlistOptions: {
+                    enableRemoveControls: 1,
                     autoPlay: false,
                 },
                 swfPath: "js/plugins",
@@ -459,6 +465,11 @@
                 myPlaylist.remove();
             });
 
+            $(".w_top_song").click(function () {
+                var jsonSongData = JSON.parse($(this).attr('song-data'));
+                myPlaylist.add(jsonSongData, true);
+            });
+
             // added 27 12 2018
             $(".addToFavouriteAction").click(function() {
                 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
@@ -472,11 +483,25 @@
                     }
                 });
             });
+
             $(".addToQueueAction").click(function () {
                 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
                     type: "POST",
                     url: "{{ Route('web.interaction.queue') }}/" + $(this).attr('song-id'),
+                    data: {_token: CSRF_TOKEN},
+                    dataType: 'JSON',
+                    success: function(result) {
+                        alert(result.message);
+                    }
+                });
+            });
+
+            $(".addToPlaylistAction").click(function () {
+                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    type: "POST",
+                    url: "{{ Route('web.interaction.playlist') }}/" + $(this).attr('song-id'),
                     data: {_token: CSRF_TOKEN},
                     dataType: 'JSON',
                     success: function(result) {

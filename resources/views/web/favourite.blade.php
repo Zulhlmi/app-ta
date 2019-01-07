@@ -20,7 +20,7 @@
                     </ul>
                     @foreach($favourites as $key => $favourite)
                         <ul>
-                            <li><a href="#"><span class="play_no">{{ $key + 1 }}</span><span class="play_hover"></span></a></li>
+                            <li><a href="#"><span class="play_no">{{ $key + 1 }}</span></a></li>
                             <li><a href="#"> {{ $favourite->getSong()->getName() }}</a></li>
                             <li><a href="#">{{ $favourite->getSong()->getAlbum()->getName() }}</a></li>
                             <li class="text-center"><a href="#">{{ $favourite->getSong()->getArtist()->getName() }}</a></li>
