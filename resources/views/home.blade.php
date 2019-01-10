@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     @if (!empty($ads))
         @foreach($ads as $ad)
             @php
@@ -10,14 +9,13 @@
         @endforeach
     @endif
 
+    @if (!empty($histories))
     <div class="ms_rcnt_slider padder_top20">
         <div class="ms_heading">
             <h1>@lang('texts.recentlyPlayed')</h1>
-            <span class="veiw_all"><a href="#">@lang('buttons.viewMore')</a></span>
         </div>
         <div class="swiper-container">
             <div class="swiper-wrapper">
-                @if (!empty($histories))
                     @foreach($histories as $history)
                         @php
                             $song = $history->getSong()
@@ -49,13 +47,13 @@
                         </div>
                     </div>
                     @endforeach
-                @endif
             </div>
         </div>
         <!-- Add Arrows -->
         <div class="swiper-button-next slider_nav_next"></div>
         <div class="swiper-button-prev slider_nav_prev"></div>
     </div>
+    @endif
 
     @if ($topWeekly)
     <div class="ms_weekly_wrapper">
@@ -63,7 +61,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="ms_heading">
-                        <h1>@lang('texts.weeklyTop', ['number' => count($topWeekly)])</h1>
+                        <h1>@lang('texts.top', ['number' => count($topWeekly)])</h1>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12 padding_right40">
@@ -116,7 +114,6 @@
     <div class="ms_featured_slider">
         <div class="ms_heading">
             <h1>@lang('texts.featuredArtist')</h1>
-            <span class="veiw_all"><a href="#">@lang('buttons.viewMore')</a></span>
         </div>
         <div class="ms_feature_slider swiper-container">
             <div class="swiper-wrapper">
@@ -145,6 +142,10 @@
     </div>
     @endif
 
+    @php
+        $checkLevel = \Pimcore\Model\DataObject\UserLevel::getById(Auth::user()->getAttribute('level__id'), 1);
+    @endphp
+    @if ($checkLevel->getLevelKey() == 'free')
     <div class="ms_advr_wrapper">
         <div class="container">
             <div class="row">
@@ -154,12 +155,12 @@
             </div>
         </div>
     </div>
+    @endif
 
     @if($newRealease)
     <div class="ms_releases_wrapper">
         <div class="ms_heading">
             <h1>@lang('texts.newReleases')</h1>
-            <span class="veiw_all"><a href="#">@lang('buttons.viewMore')</a></span>
         </div>
         <div class="ms_release_slider swiper-container">
             <div class="ms_divider"></div>
@@ -202,7 +203,6 @@
     <div class="ms_fea_album_slider">
         <div class="ms_heading">
             <h1>@lang('texts.topAlbum')</h1>
-            <span class="veiw_all"><a href="#">@lang('buttons.viewMore')</a></span>
         </div>
         <div class="ms_album_slider swiper-container">
             <div class="swiper-wrapper">
@@ -236,7 +236,6 @@
         <div class="ms_featured_slider">
             <div class="ms_heading">
                 <h1>@lang('texts.topGenre')</h1>
-                <span class="veiw_all"><a href="#">@lang('buttons.viewMore')</a></span>
             </div>
             <div class="ms_feature_slider swiper-container">
                 <div class="swiper-wrapper">
@@ -264,16 +263,5 @@
             <div class="swiper-button-prev1 slider_nav_prev"></div>
         </div>
     @endif
-
-    <div class="ms_advr_wrapper ms_advr2">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <a href="#"><img src="http://via.placeholder.com/730x90" alt="" class="img-fluid"/></a>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
 @endsection

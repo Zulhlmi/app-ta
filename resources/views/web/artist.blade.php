@@ -5,7 +5,6 @@
     <div class="ms_featured_slider padder_top20">
         <div class="ms_heading">
             <h1>@lang('texts.featuredArtist')</h1>
-            <span class="veiw_all"><a href="#">@lang('buttons.viewMore')</a></span>
         </div>
         <div class="ms_relative_inner">
             <div class="ms_feature_slider swiper-container">

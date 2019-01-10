@@ -11,7 +11,7 @@ return [
     'register' => 'Daftar',
     'alreadyHaveAnAccount' => 'Sudah Memiliki Akun?',
     'recentlyPlayed' => 'Baru saja diputar',
-    'weeklyTop' => ':number Teratas Mingguan',
+    'top' => ':number teratas',
     'featuredArtist' => 'Artis Teratas',
     'newReleases' => 'Baru dirilis',
     'featuredAlbum' => 'Album Pilihan',
@@ -29,4 +29,7 @@ return [
     'listSongByAlbum' => 'Daftar lagu dari album " :album "',
     'listSongByArtist' => 'Daftar lagu dari artis " :artis "',
     'listSongByGenre' => 'Daftar lagu dari genre " :genre "',
+
+
+    'genre' => 'Genre',
 ];

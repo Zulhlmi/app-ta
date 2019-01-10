@@ -6,7 +6,6 @@
         <div class="ms_fea_album_slider padder_top10 ">
             <div class="ms_heading">
                 <h1>@lang('texts.topAlbum')</h1>
-                <span class="veiw_all"><a href="#">@lang('buttons.viewMore')</a></span>
             </div>
                 <div class="ms_album_slider swiper-container">
                     <div class="swiper-wrapper">

@@ -19,6 +19,12 @@ class FavouriteHelper
         $favouriteCollections = new DataObject\Fieldcollection();
         $userPimcore = UserPimcore::getById(auth()->id(), 1);
         $songObj = Song::getById($songId, 1);
+
+        $favouriteCollection = new DataObject\Fieldcollection\Data\Favourite();
+        $favouriteCollection->setSong($songObj);
+
+        $favouriteCollections->add($favouriteCollection);
+
         $favouriteList = $userPimcore->getFavourite() ? $userPimcore->getFavourite()->getItems() : null;
         if ($favouriteList) {
             foreach ($favouriteList as $favourite) {
@@ -27,15 +33,37 @@ class FavouriteHelper
                 $favouriteCollections->add($favouriteCollection);
             }
         }
-        $favouriteCollection = new DataObject\Fieldcollection\Data\Favourite();
-        $favouriteCollection->setSong($songObj);
-
-        $favouriteCollections->add($favouriteCollection);
 
         $userPimcore->setFavourite($favouriteCollections);
         $userPimcore->save();
 
         return true;
+    }
+
+    public static function remove($index)
+    {
+        $favouriteCollections = new DataObject\Fieldcollection();
+        $userPimcore = UserPimcore::getById(auth()->id(), 1);
+        $favouriteList = $userPimcore->getFavourite() ? $userPimcore->getFavourite()->getItems() : null;
+        if ($favouriteList) {
+            $iArray = 0;
+            foreach ($favouriteList as $favourite) {
+                if ($index != $iArray) {
+                    $favouriteCollection = new DataObject\Fieldcollection\Data\Favourite();
+                    $favouriteCollection->setSong($favourite->getSong());
+                    $favouriteCollections->add($favouriteCollection);
+                }
+                $iArray++;
+            }
+        }
+        try {
+            $userPimcore->setFavourite($favouriteCollections);
+            $userPimcore->save();
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     public static function getFavourites()

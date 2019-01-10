@@ -4,23 +4,19 @@ namespace App\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Helpers\HistoryHelper;
+use App\Helpers\RecentlyPlayedHelper;
 
 class HistoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $histories = HistoryHelper::getHistory();
+        $histories = RecentlyPlayedHelper::getRecentlyPlayed();
         $historydata = [];
         if (!empty($histories)) {
             foreach ($histories as $history) {
                 $songObj = $history->getSong();
                 $historydata[] = [
+                    'id' => $songObj->getId(),
                     'title' => $songObj->getName(),
                     'image' => $songObj->getImg() ? $songObj->getImg()->getFullPath() : null,
                     'mp3' => $songObj->getFile() ? $songObj->getFile()->getFullPath() : null,
@@ -31,71 +27,5 @@ class HistoryController extends Controller
         return view('web.history', [
             'songs' => $historydata
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

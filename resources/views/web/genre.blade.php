@@ -5,8 +5,7 @@
     @if($genres)
         <div class="ms_featured_slider">
             <div class="ms_heading">
-                <h1>@lang('texts.topGenre')</h1>
-                <span class="veiw_all"><a href="#">@lang('buttons.viewMore')</a></span>
+                <h1>@lang('texts.genre')</h1>
             </div>
             <div class="ms_feature_slider swiper-container">
                 <div class="swiper-wrapper">

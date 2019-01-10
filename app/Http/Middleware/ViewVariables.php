@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Helpers\QueueHelper;
+use App\Helpers\AdHelper;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
@@ -24,6 +25,7 @@ class ViewVariables
     public function handle($request, Closure $next)
     {
         $queueCollection = QueueHelper::getQueues();
+        $ads = AdHelper::getAds();
         $userPlaylist = [];
         if ($queueCollection) {
             foreach ($queueCollection as $queue) {
@@ -39,6 +41,7 @@ class ViewVariables
             }
         }
         view()->share('userPlaylist', $userPlaylist);
+        view()->share('ads', $ads);
 
         return $next($request);
     }

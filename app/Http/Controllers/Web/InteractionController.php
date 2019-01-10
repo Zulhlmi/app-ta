@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Helpers\FavouriteHelper;
-use App\Helpers\HistoryHelper;
+use App\Helpers\RecentlyPlayedHelper;
 use App\Helpers\PlaylistHelper;
 use App\Helpers\QueueHelper;
 use Pimcore\Model\DataObject\Song;
@@ -13,82 +13,6 @@ use App\Http\Controllers\Controller;
 
 class InteractionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function play($song_id)
     {
         $validator = Validator::make(['song_id' => $song_id], [
@@ -97,7 +21,7 @@ class InteractionController extends Controller
         if ($validator->fails()) {
             return response($validator->errors(), 200);
         }
-        $historyCollections = HistoryHelper::checkAndAdd($song_id);
+        $historyCollections = RecentlyPlayedHelper::checkAndAdd($song_id);
         return response($song_id, 200);
     }
 
@@ -118,6 +42,17 @@ class InteractionController extends Controller
         return response($song_id, 200);
     }
 
+    public function removeFavourite($i)
+    {
+        $remove = FavouriteHelper::remove($i);
+        if ($remove) {
+            return response([
+                'message' => 'Berhasil menghapus'
+            ], 200);
+        }
+        return response($i, 200);
+    }
+
     public function queue($song_id)
     {
         $validator = Validator::make(['song_id' => $song_id], [
@@ -130,7 +65,7 @@ class InteractionController extends Controller
         if ($addToQueueCollections) {
             return response([
                 'message' => __('texts.addToQueueSuccess')
-            ]);
+            ], 200);
         }
         return response($song_id, 200);
     }
@@ -141,7 +76,7 @@ class InteractionController extends Controller
         if ($remove) {
             return response([
                 'message' => 'Berhasil menghapus'
-            ]);
+            ], 200);
         }
         return response($i, 200);
     }
@@ -158,7 +93,7 @@ class InteractionController extends Controller
         if ($addToQueueCollections) {
             return response([
                 'message' => __('texts.addToQueueSuccess')
-            ]);
+            ], 200);
         }
         return response($song_id, 200);
     }

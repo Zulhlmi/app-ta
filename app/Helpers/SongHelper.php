@@ -12,13 +12,20 @@ use Pimcore\Model\DataObject\Song;
 
 class SongHelper
 {
+
+    public static $limit = 15;
+
+    public static $order = 'desc';
+
+    public static $orderKey = 'o_id';
+
     public static function getSong()
     {
         $songs = [];
         $songList = new Song\Listing();
-        $songList->setLimit(50);
-        $songList->setOrderKey('o_id');
-        $songList->setOrder('desc');
+        $songList->setLimit(self::$limit);
+        $songList->setOrderKey(self::$orderKey);
+        $songList->setOrder(self::$order);
         $songList->load();
         if (!empty($songList->getObjects())) {
             foreach ($songList->getObjects() as $song) {

@@ -9,7 +9,6 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
@@ -24,10 +23,21 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('js/plugins/scroll/jquery.mCustomScrollbar.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.33.1/dist/sweetalert2.all.min.js"></script>
+    <!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+
     <link rel="shortcut icon" type="image/png" href="{{ url('images/favicon.png') }}">
 
 </head>
 <body>
+    @if (!empty($ads))
+        @foreach($ads as $ad)
+            @php
+                $first = $ad['img'];
+            @endphp
+        @endforeach
+    @endif
 
     <div class="ms_main_wrapper ms_profile">
 
@@ -292,25 +302,20 @@
     </div>
 
     <!-- Modal iklan -->
+    @php
+        $checkLevel = \Pimcore\Model\DataObject\UserLevel::getById(Auth::user()->getAttribute('level__id'), 1);
+    @endphp
+    @if ($checkLevel->getLevelKey() == 'free')
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                {{--<div class="modal-header">--}}
-                    {{--<h5 class="modal-title" id="exampleModalLabel">Iklan</h5>--}}
-                    {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-                        {{--<span aria-hidden="true">&times;</span>--}}
-                    {{--</button>--}}
-                {{--</div>--}}
                 <div class="modal-body">
                     <img src="{{ $first }}" class="img-fluid" >
                 </div>
-                {{--<div class="modal-footer">--}}
-                    {{--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--}}
-                    {{--<button type="button" class="btn btn-primary">Save changes</button>--}}
-                {{--</div>--}}
             </div>
         </div>
     </div>
+    @endif
 
     <input type="hidden" value="0" id="showAds">
 
@@ -486,12 +491,14 @@
 
             $(".addToQueueAction").click(function () {
                 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                var jsonSongData = JSON.parse($(this).attr('data-json'));
                 $.ajax({
                     type: "POST",
                     url: "{{ Route('web.interaction.queue') }}/" + $(this).attr('song-id'),
                     data: {_token: CSRF_TOKEN},
                     dataType: 'JSON',
                     success: function(result) {
+                        myPlaylist.add(jsonSongData, false);
                         alert(result.message);
                     }
                 });

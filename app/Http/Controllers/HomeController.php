@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\AdHelper;
 use App\Helpers\AlbumHelper;
 use App\Helpers\ArtistHelper;
-use App\Helpers\HistoryHelper;
+use App\Helpers\RecentlyPlayedHelper;
 use App\Helpers\GenreHelper;
 use App\Helpers\SongHelper;
 use Illuminate\Http\Request;
@@ -30,7 +30,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $ads = AdHelper::getAds();
         $isFreeUser = $this->isFree();
         if (!$isFreeUser) {
             $ads = [];
@@ -41,10 +40,9 @@ class HomeController extends Controller
         $topArtist = ArtistHelper::getArtist();
         $topWeekly = SongHelper::getSong();
         $topGenre = GenreHelper::getGenre();
-        $histories = HistoryHelper::getHistory();
+        $histories = RecentlyPlayedHelper::getRecentlyPlayed();
 
         return view('home', [
-            'ads' => $ads,
             'topAlbum' => $topAlbum,
             'newRealease' => $newRilis,
             'topArtist' => $topArtist,
