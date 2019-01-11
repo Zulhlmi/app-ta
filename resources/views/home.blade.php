@@ -26,22 +26,10 @@
                                 <img src="{{ $song->getImg() ? $song->getImg()->getFullPath() : null }}" alt="">
                                 <div class="ms_main_overlay">
                                     <div class="ms_box_overlay"></div>
-                                    {{--<div class="ms_more_icon">--}}
-                                        {{--<img src="images/svg/more.svg" alt="">--}}
-                                    {{--</div>--}}
-                                    {{--<ul class="more_option">--}}
-                                        {{--<li><a href="#"><span class="opt_icon"><span class="icon icon_fav"></span></span>@lang('buttons.addToFavourite')</a></li>--}}
-                                        {{--<li><a href="#"><span class="opt_icon"><span class="icon icon_queue"></span></span>@lang('buttons.addToQueue')</a></li>--}}
-                                        {{--<li><a href="#"><span class="opt_icon"><span class="icon icon_playlst"></span></span>@lang('buttons.addToPlaylist')</a></li>--}}
-                                        {{--<li><a href="#"><span class="opt_icon"><span class="icon icon_share"></span></span>@lang('buttons.share')</a></li>--}}
-                                    {{--</ul>--}}
-                                    {{--<div class="ms_play_icon">--}}
-                                        {{--<img src="images/svg/play.svg" alt="">--}}
-                                    {{--</div>--}}
                                 </div>
                             </div>
                             <div class="ms_rcnt_box_text">
-                                <h3><a href="#">{{ $song->getName() ? $song->getName() : null }}</a></h3>
+                                <h3><a href="">{{ $song->getName() ? $song->getName() : null }}</a></h3>
                                 <p>{{ $song->getArtist() ? $song->getArtist()->getName() : null }}</p>
                             </div>
                         </div>
@@ -87,7 +75,7 @@
                             </div>
                         </div>
                         <div class="weekly_right">
-                            <span class="w_song_time">5:10</span>
+                            <span class="w_song_time">-</span>
                             <span class="ms_more_icon" data-other="1">
 										<img src="images/svg/more.svg" alt="">
 									</span>
@@ -128,7 +116,7 @@
                             </div>
                         </div>
                         <div class="ms_rcnt_box_text">
-                            <h3><a href="#">{{ $artist['name'] }}</a></h3>
+                            <h3><a href="{{ route('artist.detail', ['id' => $artist['id']]) }}">{{ $artist['name'] }}</a></h3>
                         </div>
                     </div>
                 </div>
@@ -217,7 +205,7 @@
                                 </div>
                             </div>
                             <div class="ms_rcnt_box_text">
-                                <h3><a href="#">{{ $album['name'] }}</a></h3>
+                                <h3><a href="{{ route('album.detail', ['id' => $album['id']]) }}">{{ $album['name'] }}</a></h3>
                                 <p>{{ $album['artist'] }}</p>
                             </div>
                         </div>
@@ -250,7 +238,7 @@
                                     </div>
                                 </div>
                                 <div class="ms_rcnt_box_text">
-                                    <h3><a href="#">{{ $genre['name'] }}</a></h3>
+                                    <h3><a href="{{ route('genre.detail', ['id' => $genre['id']]) }}">{{ $genre['name'] }}</a></h3>
                                 </div>
                             </div>
                         </div>

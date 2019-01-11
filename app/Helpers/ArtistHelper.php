@@ -22,6 +22,9 @@ class ArtistHelper
         $featuredArtistList->load();
         if ($featuredArtistList->getCount() > 0) {
             foreach ($featuredArtistList->getObjects() as $object) {
+                /**
+                 * counter
+                 */
                 $tmpFeaturedArtist['id']    = $object->getId();
                 $tmpFeaturedArtist['name']  = $object->getName();
                 $tmpFeaturedArtist['img']   = $object->getImg() ? \Pimcore\Tool::getHostUrl().$object->getImg()->getFullPath() : 'http://via.placeholder.com/240';

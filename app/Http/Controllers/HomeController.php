@@ -37,8 +37,17 @@ class HomeController extends Controller
 
         $topAlbum = AlbumHelper::getAlbum();
         $newRilis = SongHelper::getSong();
+
         $topArtist = ArtistHelper::getArtist();
+
+        /**
+         * Set order by counter
+         */
+        SongHelper::$order      = 'desc';
+        SongHelper::$orderKey   = 'counter';
         $topWeekly = SongHelper::getSong();
+
+
         $topGenre = GenreHelper::getGenre();
         $histories = RecentlyPlayedHelper::getRecentlyPlayed();
 

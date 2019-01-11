@@ -19,7 +19,10 @@
                                     <span class="w_top_no">
 										{{ $key + 1 }}
 									</span>
-                                    <div class="w_top_song" song-data='@json($song)'>
+                                    <audio id="myaudio" song-id="{{ $song['id'] }}">
+                                        <source src="{{ $song['mp3'] }}" type="audio/mpeg">
+                                    </audio>
+                                    <div class="w_top_song" song-data='@json($song)' song-path="{{ $song['mp3'] }}">
                                         <div class="w_tp_song_img">
                                             <img src="{{ $song['image'] }}">
                                             <div class="ms_song_overlay">
@@ -35,7 +38,8 @@
                                     </div>
                                 </div>
                                 <div class="weekly_right">
-                                    {{--<span class="w_song_time">5:10</span>--}}
+                                    <span id="w_song_time" class="w_song_time" song-id="{{ $song['id'] }}">
+                                    </span>
                                     <span class="ms_more_icon" data-other="1">
 										<img src="images/svg/more.svg" alt="">
 									</span>
@@ -80,6 +84,8 @@
 
 @push('scripts')
     <script>
+        $(document).ready(function() {
 
+        });
     </script>
 @endpush
