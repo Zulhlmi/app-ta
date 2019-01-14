@@ -18,8 +18,8 @@
                                     <span class="w_top_no">
 										{{ $key + 1 }}
 									</span>
-                                    <div class="w_top_song" song-json='@json($song)' song-id="{{ $song['id'] }}">
-                                        <div class="w_tp_song_img">
+                                    <div class="w_top_song">
+                                        <div class="w_tp_song_img" song-json='@json($song)' song-id="{{ $song['id'] }}">
                                             <img src="{{ $song['image'] }}">
                                             <div class="ms_song_overlay">
                                             </div>

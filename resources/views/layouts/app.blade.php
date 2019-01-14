@@ -107,10 +107,10 @@
             <div class="ms_sidemenu_inner">
                 <div class="ms_logo_inner">
                     <div class="ms_logo">
-                        <a href="{{ route('home') }}"><img src="{{ URL('/') }}/images/logo.png" alt="" class="img-fluid"/></a>
+                        <a href="{{ route('home') }}"><img src="{{ URL('images/logo.png') }}" alt="" class="img-fluid"/></a>
                     </div>
                     <div class="ms_logo_open">
-                        <a href="{{ route('home') }}"><img src="{{ URL('/') }}/images/open_logo.png" alt="" class="img-fluid"/></a>
+                        <a href="{{ route('home') }}"><img src="{{ URL('images/open_logo.png') }}" alt="" class="img-fluid"/></a>
                     </div>
                 </div>
                 <div class="ms_nav_wrapper">
@@ -219,16 +219,21 @@
                         <form method="post" action="{{ Route('web.interaction.search') }}">
                             @csrf
                             <input type="text" name="keyword" class="form-control" placeholder="@lang('placeholder.searchSong')" autocomplete="off">
-                            <button type="submit">
                                 <span class="search_icon">
-                                    <img src="{{ url('images/svg/search.svg') }}">
+                                    <button type="submit" style="background-color: transparent;border: 0px;">
+                                        <img src="{{ url('images/svg/search.svg') }}">
+                                    </button>
                                 </span>
-                            </button>
                         </form>
                     </div>
-                    {{--<div class="ms_top_trend">--}}
-                        {{--<span><a href="#"  class="ms_color">@lang('texts.newSong') :</a></span> <span class="top_marquee"><a href="#">..</a></span>--}}
-                    {{--</div>--}}
+                    <div class="ms_top_trend">
+                        <span>
+                            <a href="javascript:void(0);"  class="ms_color">@lang('texts.newSong') :</a>
+                        </span>
+                        <span class="top_marquee">
+                            <a href="javascript:void(0);">{{ $oneTop[0]['title']  }}</a>
+                        </span>
+                    </div>
                 </div>
                 <div class="ms_top_right">
                     <div class="ms_top_lang">
