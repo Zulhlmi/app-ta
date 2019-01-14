@@ -27,12 +27,11 @@ class ViewVariables
     {
         $queueCollection = QueueHelper::getQueues();
         $ads = AdHelper::getAds();
-        $userPlaylist = [];
 
         $oneTop = SongHelper::$limit = 1;
         $oneTop = SongHelper::getSong();
 
-        view()->share('userPlaylist', $userPlaylist);
+        view()->share('userPlaylist', $queueCollection);
         view()->share('ads', $ads);
         view()->share('oneTop', $oneTop);
 

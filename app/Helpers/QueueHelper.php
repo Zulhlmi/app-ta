@@ -73,7 +73,34 @@ class QueueHelper
         if (auth()->id()) {
             $user = UserPimcore::getById(auth()->id(), 1);
             $queueCollections = $user->getQueue() ? $user->getQueue()->getItems() : null;
+            $songs = [];
+            if (!empty($queueCollections)) {
+                foreach ($queueCollections as $queueCollection) {
+                    $songObj    = $queueCollection->getSong();
+
+                    $id3            = ID3Helper::analyze($songObj->getFile()->getFullPath());
+                    $songId         = $songObj->getId() ? $songObj->getId() : null;
+                    $songImage      = $songObj->getImg() ? $songObj->getImg()->getFullPath() : 'http://via.placeholder.com/100';
+                    $songName       = $songObj->getName() ? $songObj->getName() : null;
+                    $songArtist     = $songObj->getArtist() ? $songObj->getArtist()->getName() : null;
+                    $songAlbum      = $songObj->getAlbum() ? $songObj->getAlbum()->getName() : null;
+                    $songFile       = $songObj->getFile() ? $songObj->getFile()->getFullPath() : 'http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3';
+
+                    $songDuration   = $id3['playtime_string'];
+
+                    $songs[] = [
+                        'id' => $songId,
+                        'image' => $songImage,
+                        'title' => $songName,
+                        'artist' => $songArtist,
+                        'album' => $songAlbum,
+                        'mp3' => $songFile,
+                        'option' => '',
+                        'duration' => $songDuration
+                    ];
+                }
+            }
         }
-        return $queueCollections;
+        return $songs;
     }
 }
