@@ -17,20 +17,17 @@
         <div class="swiper-container">
             <div class="swiper-wrapper">
                     @foreach($histories as $history)
-                        @php
-                            $song = $history->getSong()
-                        @endphp
                     <div class="swiper-slide">
                         <div class="ms_rcnt_box">
                             <div class="ms_rcnt_box_img">
-                                <img src="{{ $song->getImg() ? $song->getImg()->getFullPath() : null }}" alt="">
+                                <img src="{{ $history['image'] }}">
                                 <div class="ms_main_overlay">
                                     <div class="ms_box_overlay"></div>
                                 </div>
                             </div>
                             <div class="ms_rcnt_box_text">
-                                <h3><a href="">{{ $song->getName() ? $song->getName() : null }}</a></h3>
-                                <p>{{ $song->getArtist() ? $song->getArtist()->getName() : null }}</p>
+                                <h3><a href="">{{ $history['title'] }}</a></h3>
+                                <p>{{ $history['artist'] }}</p>
                             </div>
                         </div>
                     </div>
@@ -59,8 +56,8 @@
                                     <span class="w_top_no">
 										{{ $key + 1 }}
 									</span>
-                            <div class="w_top_song" song-data='@json($top)'>
-                                <div class="w_tp_song_img">
+                            <div class="w_top_song">
+                                <div class="w_tp_song_img" song-json='@json($top)'>
                                     <img src="{{ $top['image'] }}" alt="" class="img-fluid">
                                     <div class="ms_song_overlay">
                                     </div>
@@ -75,9 +72,9 @@
                             </div>
                         </div>
                         <div class="weekly_right">
-                            <span class="w_song_time">-</span>
+                            <span class="w_song_time">{{ $top['duration'] }}</span>
                             <span class="ms_more_icon" data-other="1">
-										<img src="images/svg/more.svg" alt="">
+										<img src="images/svg/more.svg" >
 									</span>
                         </div>
                         <ul class="more_option">
@@ -173,7 +170,7 @@
                             </div>
                         </div>
                         <div class="weekly_right">
-                            <span class="w_song_time">5:10</span>
+                            <span class="w_song_time">{{ $rilis['duration'] }}</span>
                         </div>
                     </div>
                 </div>

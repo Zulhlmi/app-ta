@@ -28,9 +28,11 @@ class FavouriteHelper
         $favouriteList = $userPimcore->getFavourite() ? $userPimcore->getFavourite()->getItems() : null;
         if ($favouriteList) {
             foreach ($favouriteList as $favourite) {
-                $favouriteCollection = new DataObject\Fieldcollection\Data\Favourite();
-                $favouriteCollection->setSong($favourite->getSong());
-                $favouriteCollections->add($favouriteCollection);
+                if ($favourite->getSong()->getId() != $songId) {
+                    $favouriteCollection = new DataObject\Fieldcollection\Data\Favourite();
+                    $favouriteCollection->setSong($favourite->getSong());
+                    $favouriteCollections->add($favouriteCollection);
+                }
             }
         }
 
@@ -40,20 +42,18 @@ class FavouriteHelper
         return true;
     }
 
-    public static function remove($index)
+    public static function remove($songId)
     {
         $favouriteCollections = new DataObject\Fieldcollection();
         $userPimcore = UserPimcore::getById(auth()->id(), 1);
         $favouriteList = $userPimcore->getFavourite() ? $userPimcore->getFavourite()->getItems() : null;
         if ($favouriteList) {
-            $iArray = 0;
             foreach ($favouriteList as $favourite) {
-                if ($index != $iArray) {
+                if ($songId != $favourite->getSong()->getId()) {
                     $favouriteCollection = new DataObject\Fieldcollection\Data\Favourite();
                     $favouriteCollection->setSong($favourite->getSong());
                     $favouriteCollections->add($favouriteCollection);
                 }
-                $iArray++;
             }
         }
         try {
@@ -70,6 +70,33 @@ class FavouriteHelper
     {
         $user = UserPimcore::getById(auth()->id(), 1);
         $favouriteCollections = $user->getFavourite() ? $user->getFavourite()->getItems() : null;
-        return $favouriteCollections;
+        $songs = [];
+        if (!empty($favouriteCollections)) {
+            foreach ($favouriteCollections as $favouriteCollection) {
+                $songObj    = $favouriteCollection->getSong();
+
+                $id3            = ID3Helper::analyze($songObj->getFile()->getFullPath());
+                $songId         = $songObj->getId() ? $songObj->getId() : null;
+                $songImage      = $songObj->getImg() ? $songObj->getImg()->getFullPath() : 'http://via.placeholder.com/100';
+                $songName       = $songObj->getName() ? $songObj->getName() : null;
+                $songArtist     = $songObj->getArtist() ? $songObj->getArtist()->getName() : null;
+                $songAlbum      = $songObj->getAlbum() ? $songObj->getAlbum()->getName() : null;
+                $songFile       = $songObj->getFile() ? $songObj->getFile()->getFullPath() : 'http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3';
+
+                $songDuration   = $id3['playtime_string'];
+
+                $songs[] = [
+                    'id' => $songId,
+                    'image' => $songImage,
+                    'title' => $songName,
+                    'artist' => $songArtist,
+                    'album' => $songAlbum,
+                    'mp3' => $songFile,
+                    'option' => '',
+                    'duration' => $songDuration
+                ];
+            }
+        }
+        return $songs;
     }
 }

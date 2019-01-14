@@ -11,7 +11,9 @@ class FavouriteController extends Controller
 {
     public function index()
     {
+
         $favouriteCollections       = FavouriteHelper::getFavourites();
+
         $rencentlyPlayedCollections = RecentlyPlayedHelper::getRecentlyPlayed();
 
         return view('web.favourite', [

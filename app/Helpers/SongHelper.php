@@ -29,13 +29,25 @@ class SongHelper
         $songList->load();
         if (!empty($songList->getObjects())) {
             foreach ($songList->getObjects() as $song) {
+                $id3            = ID3Helper::analyze($song->getFile()->getFullPath());
+                $songId         = $song->getId() ? $song->getId() : null;
+                $songImage      = $song->getImg() ? $song->getImg()->getFullPath() : 'http://via.placeholder.com/100';
+                $songName       = $song->getName() ? $song->getName() : null;
+                $songArtist     = $song->getArtist() ? $song->getArtist()->getName() : null;
+                $songAlbum      = $song->getAlbum() ? $song->getAlbum()->getName() : null;
+                $songFile       = $song->getFile() ? $song->getFile()->getFullPath() : 'http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3';
+
+                $songDuration   = $id3['playtime_string'];
+
                 $songs[] = [
-                    'id' => $song->getId(),
-                    'image' => $song->getImg() ? $song->getImg()->getFullPath() : 'http://via.placeholder.com/100',
-                    'title' => $song->getName(),
-                    'artist' => $song->getArtist()->getName(),
-                    'mp3' => $song->getFile() ? $song->getFile()->getFullPath() : 'http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3',
-                    'option' => ''
+                    'id' => $songId,
+                    'image' => $songImage,
+                    'title' => $songName,
+                    'artist' => $songArtist,
+                    'album' => $songAlbum,
+                    'mp3' => $songFile,
+                    'option' => '',
+                    'duration' => $songDuration
                 ];
             }
             return $songs;
@@ -54,13 +66,25 @@ class SongHelper
         $songList->load();
         if (!empty($songList->getObjects())) {
             foreach ($songList->getObjects() as $song) {
+                $id3            = ID3Helper::analyze($song->getFile()->getFullPath());
+                $songId         = $song->getId() ? $song->getId() : null;
+                $songImage      = $song->getImg() ? $song->getImg()->getFullPath() : 'http://via.placeholder.com/100';
+                $songName       = $song->getName() ? $song->getName() : null;
+                $songArtist     = $song->getArtist() ? $song->getArtist()->getName() : null;
+                $songAlbum      = $song->getAlbum() ? $song->getAlbum()->getName() : null;
+                $songFile       = $song->getFile() ? $song->getFile()->getFullPath() : 'http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3';
+
+                $songDuration   = $id3['playtime_string'];
+
                 $songs[] = [
-                    'id' => $song->getId(),
-                    'image' => $song->getImg() ? $song->getImg()->getFullPath() : 'http://via.placeholder.com/100',
-                    'title' => $song->getName(),
-                    'artist' => $song->getArtist()->getName(),
-                    'mp3' => $song->getFile() ? $song->getFile()->getFullPath() : 'http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3',
-                    'option' => ''
+                    'id' => $songId,
+                    'image' => $songImage,
+                    'title' => $songName,
+                    'artist' => $songArtist,
+                    'album' => $songAlbum,
+                    'mp3' => $songFile,
+                    'option' => '',
+                    'duration' => $songDuration
                 ];
             }
             return $songs;

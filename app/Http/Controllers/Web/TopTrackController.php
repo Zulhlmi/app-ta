@@ -10,11 +10,17 @@ class TopTrackController extends Controller
 {
     public function index()
     {
-        SongHelper::$orderKey   = 'counter';
-        SongHelper::$order      = 'desc';
+        $songs = SongHelper::$orderKey   = 'counter';
+        $songs = SongHelper::$order      = 'desc';
         $songs = SongHelper::getSong();
+
+        $newest = SongHelper::$orderKey   = 'o_id';
+        $newest = SongHelper::$order      = 'desc';
+        $newest = SongHelper::getSong();
+
         return view('web.toptrack', [
-            'songs' => $songs
+            'songs' => $songs,
+            'newest' => $newest,
         ]);
     }
 }

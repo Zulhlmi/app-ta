@@ -23,11 +23,70 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('js/plugins/scroll/jquery.mCustomScrollbar.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.33.1/dist/sweetalert2.all.min.js"></script>
-    <!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
-    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+    <script type="text/javascript">
+        /**
+         * Defined variable, so we can access globally.
+         */
+        var myPlaylist;
+        var csrfToken;
+        var baseUrl = "{{ url('/') }}";
+        var removeUrl = "{{ route('web.interaction.remove.queue') }}";
+
+
+        function callToast(message)
+        {
+            $('#snackbar-text').html(message);
+            var snackbar = document.getElementById('snackbar');
+            snackbar.className = 'show';
+            setTimeout(function() { snackbar.className = snackbar.className.replace("show", ""); }, 1000 );
+        }
+    </script>
 
     <link rel="shortcut icon" type="image/png" href="{{ url('images/favicon.png') }}">
+
+    <style>
+        #snackbar {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            top: 100px;
+            font-size: 17px;
+        }
+
+        #snackbar.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {top: 0; opacity: 0;}
+            to {top: 100px; opacity: 1;}
+        }
+
+        @keyframes fadein {
+            from {top: 0; opacity: 0;}
+            to {top: 100px; opacity: 1;}
+        }
+
+        @-webkit-keyframes fadeout {
+            from {top: 100px; opacity: 1;}
+            to {top: 0; opacity: 0;}
+        }
+
+        @keyframes fadeout {
+            from {top: 100px; opacity: 1;}
+            to {top: 0; opacity: 0;}
+        }
+    </style>
 
 </head>
 <body>
@@ -162,7 +221,7 @@
                             <input type="text" name="keyword" class="form-control" placeholder="@lang('placeholder.searchSong')" autocomplete="off">
                             <button type="submit">
                                 <span class="search_icon">
-                                    <img src="images/svg/search.svg" alt="">
+                                    <img src="{{ url('images/svg/search.svg') }}">
                                 </span>
                             </button>
                         </form>
@@ -278,7 +337,7 @@
                                                     <div class="knob d3"><span></span></div>
                                                     <div class="handle"></div>
                                                     <div class="round">
-                                                        <img src="images/svg/volume.svg" alt="">
+                                                        <img src="{{ url('images/svg/volume.svg') }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -297,6 +356,10 @@
                 </div>
             </div>
             <!--main div-->
+        </div>
+
+        <div id="snackbar">
+            <p id="snackbar-text"></p>
         </div>
 
     </div>
@@ -319,11 +382,6 @@
 
     <input type="hidden" value="0" id="showAds">
 
-    <script>
-        var baseUrl = "{{ Url('/') }}";
-        var removeUrl = "{{ route('web.interaction.remove.queue') }}";
-    </script>
-
     <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.js') }}" ></script>
     <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
@@ -338,11 +396,13 @@
     <script type="text/javascript">
         $(document).ready(function(){
 
+            csrfToken = $('meta[name="csrf-token"]').attr('content');
+
             /**
              * @param bind, playlistdata, options
              * @type {jPlayerPlaylist}
              */
-            var myPlaylist = new jPlayerPlaylist({
+            myPlaylist = new jPlayerPlaylist({
                 jPlayer: "#jquery_jplayer_1",
                 cssSelectorAncestor: "#jp_container_1"
             }, @json($userPlaylist), {
@@ -374,13 +434,13 @@
                         $("#showAds").val(increaseShowAds);
                     }
                     if (index == current) {
-                        idA = obj.id;
+                        songId = obj.id;
                         $(".jp-now-playing").html("<div class='jp-track-name'><span class='que_img'><img src='"+obj.image+"' class='img-fluid' style='max-height: 45px;max-width: 75px'></span><div class='que_data'>" + obj.title + " <div class='jp-artist-name'>" + obj.artist + "</div></div></div>");
                     }
                 });
 
                 if (event.type === 'jPlayer_play') {
-                    addRecentlyPlaylist(idA);
+                    addRecentlyPlayed(songId);
                 }
 
                 $('.knob-wrapper').mousedown(function() {
@@ -466,66 +526,45 @@
 
             });
 
-            $("#clearAllPlaylist").click(function() {
-                myPlaylist.remove();
-            });
-
-            $(".w_top_song").click(function () {
-                var jsonSongData = JSON.parse($(this).attr('song-data'));
-                myPlaylist.add(jsonSongData, true);
-            });
-
-            // added 27 12 2018
             $(".addToFavouriteAction").click(function() {
-                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
                     type: "POST",
-                    url: "{{ Route('web.interaction.favourite') }}/" + $(this).attr('song-id'),
-                    data: {_token: CSRF_TOKEN},
+                    url: baseUrl + "/interaction/favourite/" + $(this).attr('song-id'),
+                    data: {_token: csrfToken},
                     dataType: 'JSON',
                     success: function(result) {
-                        alert(result.message);
+                        callToast(result.message);
                     }
                 });
             });
 
             $(".addToQueueAction").click(function () {
-                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                var jsonSongData = JSON.parse($(this).attr('data-json'));
+                var songJson = JSON.parse($(this).attr('song-json'));
                 $.ajax({
                     type: "POST",
-                    url: "{{ Route('web.interaction.queue') }}/" + $(this).attr('song-id'),
-                    data: {_token: CSRF_TOKEN},
+                    url: baseUrl + "/interaction/queue/" + $(this).attr('song-id'),
+                    data: {_token: csrfToken},
                     dataType: 'JSON',
                     success: function(result) {
-                        myPlaylist.add(jsonSongData, false);
-                        alert(result.message);
+                        myPlaylist.add(songJson, false);
+                        callToast(result.message);
                     }
                 });
             });
 
-            $(".addToPlaylistAction").click(function () {
-                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                $.ajax({
-                    type: "POST",
-                    url: "{{ Route('web.interaction.playlist') }}/" + $(this).attr('song-id'),
-                    data: {_token: CSRF_TOKEN},
-                    dataType: 'JSON',
-                    success: function(result) {
-                        alert(result.message);
-                    }
-                });
+            $('.w_tp_song_img').click(function () {
+                var songJson = JSON.parse($(this).attr('song-json'));
+                myPlaylist.add(songJson, true);
             });
 
-            function addRecentlyPlaylist(id){
-                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            function addRecentlyPlayed(id)
+            {
                 $.ajax({
                     type: "POST",
-                    url: "{{ Route('web.interaction.play') }}/" + id,
-                    data: {_token: CSRF_TOKEN},
+                    url: baseUrl + "/interaction/play/" + id,
+                    data: {_token: csrfToken},
                     dataType: 'JSON',
                     success: function(result) {
-                        console.log(result);
                     }
                 });
             }
@@ -533,12 +572,12 @@
         });
     </script>
 
-    <script type="text/javascript" src="js/plugins/player/volume.js"></script>
-    <script type="text/javascript" src="js/plugins/nice_select/jquery.nice-select.min.js"></script>
-    <script type="text/javascript" src="js/plugins/scroll/jquery.mCustomScrollbar.js"></script>
-    <script type="text/javascript" src="js/custom.js"></script>
-
     @stack('scripts')
+
+    <script type="text/javascript" src="{{ asset('js/plugins/player/volume.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/plugins/nice_select/jquery.nice-select.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/plugins/scroll/jquery.mCustomScrollbar.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
 
 </body>
 </html>

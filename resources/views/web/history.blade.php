@@ -18,7 +18,7 @@
                                     <span class="w_top_no">
 										{{ $key + 1 }}
 									</span>
-                                    <div class="w_top_song" song-data='@json($song)' song-id="{{ $song['id'] }}">
+                                    <div class="w_top_song" song-json='@json($song)' song-id="{{ $song['id'] }}">
                                         <div class="w_tp_song_img">
                                             <img src="{{ $song['image'] }}">
                                             <div class="ms_song_overlay">
@@ -49,7 +49,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="addToQueueAction" song-id="{{ $song['id'] }}" data-json='@json($song)'>
+                                        <a href="#" class="addToQueueAction" song-id="{{ $song['id'] }}" song-json='@json($song)'>
                                             <span class="opt_icon">
                                                 <span class="icon icon_queue"></span>
                                             </span>

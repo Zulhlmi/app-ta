@@ -19,13 +19,13 @@
                                     <span class="w_top_no">
 										{{ $key + 1 }}
 									</span>
-                                    <div class="w_top_song" song-data='@json($song)'>
-                                        <div class="w_tp_song_img">
+                                    <div class="w_top_song">
+                                        <div class="w_tp_song_img" song-json='@json($song)'>
                                             <img src="{{ $song['image'] }}">
                                             <div class="ms_song_overlay">
                                             </div>
                                             <div class="ms_play_icon">
-                                                <img src="/images/svg/play.svg">
+                                                <img src="{{ url('images/svg/play.svg') }}">
                                             </div>
                                         </div>
                                         <div class="w_tp_song_name">
@@ -35,16 +35,15 @@
                                     </div>
                                 </div>
                                 <div class="weekly_right">
-                                    {{--<span class="w_song_time">5:10</span>--}}
+                                    <span class="w_song_time">{{ $song['duration'] }}</span>
                                     <span class="ms_more_icon" data-other="1">
-										<img src="/images/svg/more.svg" alt="">
+										<img src="{{ url('images/svg/more.svg') }}">
 									</span>
                                 </div>
                                 <ul class="more_option">
                                     <li><a href="#" class="addToFavouriteAction" song-id="{{ $song['id'] }}"><span class="opt_icon"><span class="icon icon_fav"></span></span>@lang('buttons.addToFavourite')</a></li>
-                                    <li><a href="#" class="addToQueueAction" song-id="{{ $song['id'] }}" data-json='@json($song)'><span class="opt_icon"><span class="icon icon_queue"></span></span>@lang('buttons.addToQueue')</a></li>
+                                    <li><a href="#" class="addToQueueAction" song-id="{{ $song['id'] }}" song-json='@json($song)'><span class="opt_icon"><span class="icon icon_queue"></span></span>@lang('buttons.addToQueue')</a></li>
                                     <li><a href="#"><span class="opt_icon"><span class="icon icon_playlst"></span></span>@lang('buttons.addToPlaylist')</a></li>
-                                    <li><a href="#"><span class="opt_icon"><span class="icon icon_share"></span></span>@lang('buttons.share')</a></li>
                                 </ul>
                             </div>
                             <div class="ms_divider"></div>

@@ -37,9 +37,11 @@ class RecentlyPlayedHelper
         $recentlyPlayedList = $userPimcore->getRecentlyPlayed() ? $userPimcore->getRecentlyPlayed()->getItems() : null;
         if ($recentlyPlayedList) {
             foreach ($recentlyPlayedList as $recentlyPlayed) {
-                $recentlyPlayedCollection = new DataObject\Fieldcollection\Data\RecentlyPlayed();
-                $recentlyPlayedCollection->setSong($recentlyPlayed->getSong());
-                $recentlyPlayedCollections->add($recentlyPlayedCollection);
+                if ($recentlyPlayed->getSong()->getId() != $songId) {
+                    $recentlyPlayedCollection = new DataObject\Fieldcollection\Data\RecentlyPlayed();
+                    $recentlyPlayedCollection->setSong($recentlyPlayed->getSong());
+                    $recentlyPlayedCollections->add($recentlyPlayedCollection);
+                }
             }
         }
 
@@ -79,8 +81,35 @@ class RecentlyPlayedHelper
     {
         $recentlyPlayedCollections = [];
         $user = UserPimcore::getById(auth()->id(), 1);
-        $recentlyPlayedCollections = $user->getRecentlyPlayed() ? $user->getRecentlyPlayed()->getItems() : [];
+        $recentlyPlayedCollections = $user->getRecentlyPlayed() ? $user->getRecentlyPlayed()->getItems() : null;
+        $songs = [];
+        if (!empty($recentlyPlayedCollections)) {
+            foreach ($recentlyPlayedCollections as $recentlyPlayedCollection) {
+                $songObj    = $recentlyPlayedCollection->getSong();
 
-        return $recentlyPlayedCollections;
+                $id3            = ID3Helper::analyze($songObj->getFile()->getFullPath());
+                $songId         = $songObj->getId() ? $songObj->getId() : null;
+                $songImage      = $songObj->getImg() ? $songObj->getImg()->getFullPath() : 'http://via.placeholder.com/100';
+                $songName       = $songObj->getName() ? $songObj->getName() : null;
+                $songArtist     = $songObj->getArtist() ? $songObj->getArtist()->getName() : null;
+                $songAlbum      = $songObj->getAlbum() ? $songObj->getAlbum()->getName() : null;
+                $songFile       = $songObj->getFile() ? $songObj->getFile()->getFullPath() : 'http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3';
+
+                $songDuration   = $id3['playtime_string'];
+
+                $songs[] = [
+                    'id' => $songId,
+                    'image' => $songImage,
+                    'title' => $songName,
+                    'artist' => $songArtist,
+                    'album' => $songAlbum,
+                    'mp3' => $songFile,
+                    'option' => '',
+                    'duration' => $songDuration
+                ];
+            }
+        }
+
+        return $songs;
     }
 }
