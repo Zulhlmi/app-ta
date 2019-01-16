@@ -36,6 +36,7 @@ class HomeController extends Controller
         }
 
         $topAlbum = AlbumHelper::getAlbum();
+        $newRilis = SongHelper::$limit = 15;
         $newRilis = SongHelper::getSong();
 
         $topArtist = ArtistHelper::getArtist();
