@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
                                 <div class="weekly_right">
-                                    {{--<span class="w_song_time">5:10</span>--}}
+                                    <span class="w_song_time">{{ $song['duration'] }}</span>
                                     <span class="ms_more_icon" data-other="1">
 										<img src="images/svg/more.svg" alt="">
 									</span>
