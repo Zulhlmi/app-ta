@@ -197,6 +197,7 @@
                                 </span>
                             </a>
                         </li>
+                        @if(Route::has('add.playlist'))
                         <li>
                             <a href="add_playlist.html">
                                 <span class="nav_icon">
@@ -207,6 +208,7 @@
                                 </span>
                             </a>
                         </li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -369,12 +371,12 @@
 
     </div>
 
-    <!-- Modal iklan -->
     @php
         $checkLevel = \Pimcore\Model\DataObject\UserLevel::getById(Auth::user()->getAttribute('level__id'), 1);
     @endphp
     @if ($checkLevel->getLevelKey() == 'free')
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Modal iklan -->
+    <div class="modal fade" id="adsModal" tabindex="-1" role="dialog" aria-labelledby="adsModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -383,7 +385,65 @@
             </div>
         </div>
     </div>
+    <!-- Modal iklan -->
     @endif
+
+    <div class="ms_save_modal">
+        <div id="save_modal" class="modal centered-modal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <i class="fa_icon form_close"></i>
+                    </button>
+                    <div class="modal-body">
+                        <div class="ms_save_email">
+                            <h3>Buat daftar putar Anda.</h3>
+                            <form method="post" action="{{ route('playlist.add') }}">
+                                @csrf
+                                <div class="save_input_group">
+                                    <input type="text" placeholder="Silahkan masukan nama daftar putar" class="form-control" name="playlist_name">
+                                </div>
+                                <button class="save_btn" type="submit">Buat</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ms_save_modal">
+        <div id="save_modal_2" class="modal centered-modal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <i class="fa_icon form_close"></i>
+                    </button>
+                    <div class="modal-body">
+                        <div class="ms_save_email">
+                            <h3>Pilih playlist</h3>
+                            <form method="post" action="{{ route('playlist.song.add') }}">
+                                @csrf
+                                <input type="hidden" value="" id="modal_song_id" name="song_id">
+                                <div class="save_input_group">
+                                    <select id="playlist_id" name="playlist_id" class="form-control">
+                                        @if (!empty($playlists))
+                                            @foreach($playlists as $playlist)
+                                                <option value="{{ $playlist->getId() }}">{{ $playlist->getName() }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                                <button class="save_btn" type="submit">OK</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <input type="hidden" value="0" id="showAds">
 
@@ -427,7 +487,7 @@
             $("#jquery_jplayer_1").on($.jPlayer.event.ready + ' ' + $.jPlayer.event.play, function(event) {
                 var showAds = parseInt($("#showAds").val());
                 if (showAds == 5) {
-                    $("#exampleModal").modal('show');
+                    $("#adsModal").modal('show');
                     $("#showAds").val(0);
                 }
                 var current = myPlaylist.current;
@@ -557,6 +617,12 @@
                 });
             });
 
+            $(".addToPlaylist").click(function () {
+                var songId = $(this).attr('song-id');
+                $('#modal_song_id').val(songId);
+                $('#save_modal_2').modal('show')
+            });
+
             $('.w_tp_song_img').click(function () {
                 var songJson = JSON.parse($(this).attr('song-json'));
                 myPlaylist.add(songJson, true);
@@ -573,6 +639,7 @@
                     }
                 });
             }
+
 
         });
     </script>

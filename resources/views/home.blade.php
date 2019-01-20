@@ -78,11 +78,9 @@
 									</span>
                         </div>
                         <ul class="more_option">
-                            <li><a href="#"><span class="opt_icon"><span class="icon icon_fav"></span></span>@lang('buttons.addToFavourite')</a></li>
-                            <li><a href="#"><span class="opt_icon"><span class="icon icon_queue"></span></span>@lang('buttons.addToQueue')</a></li>
-                            <li><a href="#"><span class="opt_icon"><span class="icon icon_dwn"></span></span>Download Now</a></li>
-                            <li><a href="#"><span class="opt_icon"><span class="icon icon_playlst"></span></span>@lang('buttons.addToPlaylist')</a></li>
-                            <li><a href="#"><span class="opt_icon"><span class="icon icon_share"></span></span>@lang('buttons.share')</a></li>
+                            <li><a class="addToFavouriteAction" song-id="{{ $top['id'] }}" song-json='@json($top)'><span class="opt_icon"><span class="icon icon_fav"></span></span>@lang('buttons.addToFavourite')</a></li>
+                            <li><a class="addToQueueAction" song-id="{{ $top['id'] }}" song-json='@json($top)'><span class="opt_icon"><span class="icon icon_queue"></span></span>@lang('buttons.addToQueue')</a></li>
+                            <li><a class="addToPlaylist" song-id="{{ $top['id'] }}" song-json='@json($top)'><span class="opt_icon"><span class="icon icon_playlst"></span></span>@lang('buttons.addToPlaylist')</a></li>
                         </ul>
                     </div>
                     <div class="ms_divider"></div>
@@ -156,7 +154,7 @@
                     <div class="ms_release_box">
                         <div class="w_top_song">
                             <span class="slider_dot"></span>
-                            <div class="w_tp_song_img">
+                            <div class="w_tp_song_img" song-json='@json($rilis)'>
                                 <img src="{{ $rilis['image'] }}" alt="">
                                 <div class="ms_song_overlay">
                                 </div>

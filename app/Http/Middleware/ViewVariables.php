@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\PlaylistHelper;
 use App\Helpers\QueueHelper;
 use App\Helpers\AdHelper;
 use App\Helpers\SongHelper;
@@ -31,9 +32,12 @@ class ViewVariables
         $oneTop = SongHelper::$limit = 1;
         $oneTop = SongHelper::getSong();
 
+        $playlists = PlaylistHelper::getPlaylist();
+
         view()->share('userPlaylist', $queueCollection);
         view()->share('ads', $ads);
         view()->share('oneTop', $oneTop);
+        view()->share('playlists', $playlists);
 
         return $next($request);
     }

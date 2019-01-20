@@ -49,7 +49,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="addToPlaylistAction" song-id="{{ $favourite['id'] }}" song-json='@json($favourite)'>
+                                        <a href="#" class="addToPlaylist" song-id="{{ $favourite['id'] }}" song-json='@json($favourite)'>
                                             <span class="opt_icon">
                                                 <span class="icon icon_playlst"></span>
                                             </span>

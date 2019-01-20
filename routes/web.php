@@ -56,6 +56,9 @@ Route::group(['middleware' => ['auth', 'view.variable']], function () {
     Route::get('history', 'Web\HistoryController@index')->name('history');
 
     Route::get('playlist', 'Web\PlaylistController@index')->name('playlist');
+    Route::post('playlist', 'Web\PlaylistController@store')->name('playlist.add');
+    Route::post('playlist/song/add', 'Web\PlaylistController@songStore')->name('playlist.song.add');
+    Route::get('playlist/detail/{id?}', 'Web\PlaylistController@show')->name('playlist.detail');
 
     Route::group(['prefix' => 'interaction'], function () {
         Route::get('/', function () {

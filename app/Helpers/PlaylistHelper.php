@@ -11,6 +11,7 @@ namespace App\Helpers;
 require_once env('PIMCORE_PATH');
 
 use Pimcore\Model\DataObject\User as UserPimcore;
+use Pimcore\Model\DataObject\Playlist;
 use Pimcore\Model\DataObject\Song;
 use Pimcore\Model\DataObject;
 
@@ -41,14 +42,80 @@ class PlaylistHelper
         return true;
     }
 
+    public static function checkAndAddSong($playlistId, $songId)
+    {
+        $checkPlaylist = Playlist::getById($playlistId, 1);
+        if (!$checkPlaylist) {
+            return false;
+        }
+        $playlistCollections = new DataObject\Fieldcollection();
+//        $userPimcore = UserPimcore::getById(auth()->id(), 1);
+        $songObj = Song::getById($songId, 1);
+
+        $playlistCollection = new DataObject\Fieldcollection\Data\Playlist();
+        $playlistCollection->setSong($songObj);
+
+        $playlistCollections->add($playlistCollection);
+
+        $PlaylistList = $checkPlaylist->getPlaylist() ? $checkPlaylist->getPlaylist()->getItems() : null;
+        if ($PlaylistList) {
+            foreach ($PlaylistList as $Playlist) {
+                if ($Playlist->getSong()->getId() != $songId) {
+                    $playlistCollection = new DataObject\Fieldcollection\Data\Playlist();
+                    $playlistCollection->setSong($Playlist->getSong());
+                    $playlistCollections->add($playlistCollection);
+                }
+            }
+        }
+
+        $checkPlaylist->setPlaylist($playlistCollections);
+        $checkPlaylist->save();
+
+        return true;
+    }
+
     public static function getPlaylist()
     {
-        $queueCollections = null;
-        if (auth()->id()) {
-            $user = UserPimcore::getById(auth()->id(), 1);
-            $queueCollections = $user->getHistory() ? $user->getHistory()->getItems() : null;
+        $playlists = new Playlist\Listing();
+        $playlists->setCondition('user__id = ?', [auth()->id()]);
+        $playlists->load();
+        return $playlists;
+    }
+
+    public static function getSongByPlaylistId($playlistId)
+    {
+        $playlistById = Playlist::getById($playlistId, 1);
+
+        $playlistCollections = $playlistById->getPlaylist() ? $playlistById->getPlaylist()->getItems() : null;
+        $songs = [];
+        if (!empty($playlistCollections)) {
+            foreach ($playlistCollections as $playlistCollection) {
+                $songObj    = $playlistCollection->getSong();
+
+                $id3            = ID3Helper::analyze($songObj->getFile()->getFullPath());
+                $songId         = $songObj->getId() ? $songObj->getId() : null;
+                $songImage      = $songObj->getImg() ? $songObj->getImg()->getFullPath() : 'http://via.placeholder.com/100';
+                $songName       = $songObj->getName() ? $songObj->getName() : null;
+                $songArtist     = $songObj->getArtist() ? $songObj->getArtist()->getName() : null;
+                $songAlbum      = $songObj->getAlbum() ? $songObj->getAlbum()->getName() : null;
+                $songFile       = $songObj->getFile() ? $songObj->getFile()->getFullPath() : 'http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3';
+
+                $songDuration   = $id3['playtime_string'];
+
+                $songs[] = [
+                    'id' => $songId,
+                    'image' => $songImage,
+                    'title' => $songName,
+                    'artist' => $songArtist,
+                    'album' => $songAlbum,
+                    'mp3' => $songFile,
+                    'option' => '',
+                    'duration' => $songDuration
+                ];
+            }
         }
-        return $queueCollections;
+        return $songs;
+
     }
 
 }

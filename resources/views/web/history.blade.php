@@ -57,7 +57,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
+                                        <a href="#" class="addToPlaylist"  song-id="{{ $song['id'] }}" song-json='@json($song)'>
                                             <span class="opt_icon">
                                                 <span class="icon icon_playlst"></span>
                                             </span>
