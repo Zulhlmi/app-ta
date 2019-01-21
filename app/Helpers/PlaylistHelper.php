@@ -21,9 +21,9 @@ class PlaylistHelper
     public static function checkAndAdd($songId)
     {
         $queueCollections = new DataObject\Fieldcollection();
-        $userPimcore = UserPimcore::getById(auth()->id(), 1);
+        $playlistD = UserPimcore::getById(auth()->id(), 1);
         $songObj = Song::getById($songId, 1);
-        $queueList = $userPimcore->getHistory() ? $userPimcore->getHistory()->getItems() : null;
+        $queueList = $playlistD->getHistory() ? $playlistD->getHistory()->getItems() : null;
         if ($queueList) {
             foreach ($queueList as $queue) {
                 $queueCollection = new DataObject\Fieldcollection\Data\History();
@@ -36,8 +36,8 @@ class PlaylistHelper
 
         $queueCollections->add($queueCollection);
 
-        $userPimcore->setHistory($queueCollections);
-        $userPimcore->save();
+        $playlistD->setHistory($queueCollections);
+        $playlistD->save();
 
         return true;
     }
@@ -49,7 +49,7 @@ class PlaylistHelper
             return false;
         }
         $playlistCollections = new DataObject\Fieldcollection();
-//        $userPimcore = UserPimcore::getById(auth()->id(), 1);
+//        $playlistD = UserPimcore::getById(auth()->id(), 1);
         $songObj = Song::getById($songId, 1);
 
         $playlistCollection = new DataObject\Fieldcollection\Data\Playlist();
@@ -116,6 +116,37 @@ class PlaylistHelper
         }
         return $songs;
 
+    }
+
+    public static function destroy($playlistId)
+    {
+        $g = Playlist::getById($playlistId, 1);
+        $g->delete();
+        return true;
+    }
+
+    public static function removeSong($playlistId, $songId)
+    {
+        $playlistCollections = new DataObject\Fieldcollection();
+        $playlistD = Playlist::getById($playlistId, 1);
+        $playlistList = $playlistD->getPlaylist() ? $playlistD->getPlaylist()->getItems() : null;
+        if ($playlistList) {
+            foreach ($playlistList as $playlist) {
+                if ($songId != $playlist->getSong()->getId()) {
+                    $playlistCollection = new DataObject\Fieldcollection\Data\Playlist();
+                    $playlistCollection->setSong($playlist->getSong());
+                    $playlistCollections->add($playlistCollection);
+                }
+            }
+        }
+        try {
+            $playlistD->setPlaylist($playlistCollections);
+            $playlistD->save();
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
 }

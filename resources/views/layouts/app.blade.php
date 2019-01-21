@@ -617,6 +617,34 @@
                 });
             });
 
+            $(".destroyPlaylist").click(function () {
+                var pid = $(this).attr('playlist-id');
+                $.ajax({
+                    type: "POST",
+                    url: baseUrl + "/interaction/playlist/remove/" + pid,
+                    data: {_token: csrfToken},
+                    dataType: 'JSON',
+                    success: function(result) {
+                        callToast(result.message);
+                    }
+                });
+            });
+
+            $(".removeSongPlaylist").click(function () {
+                var pid = $(this).attr('playlist-id');
+                var sid = $(this).attr('song-id');
+                $.ajax({
+                    type: "POST",
+                    url: baseUrl + "/interaction/playlist/song/remove",
+                    data: {_token: csrfToken, playlist_id: pid, song_id: sid},
+                    dataType: 'JSON',
+                    success: function(result) {
+                        $("ul[list-id="+sid+"]").remove();
+                        callToast(result.message);
+                    }
+                });
+            });
+
             $(".addToPlaylist").click(function () {
                 var songId = $(this).attr('song-id');
                 $('#modal_song_id').val(songId);
@@ -624,6 +652,11 @@
             });
 
             $('.w_tp_song_img').click(function () {
+                var songJson = JSON.parse($(this).attr('song-json'));
+                myPlaylist.add(songJson, true);
+            });
+
+            $('.ms_rcnt_box_img').click(function () {
                 var songJson = JSON.parse($(this).attr('song-json'));
                 myPlaylist.add(songJson, true);
             });
@@ -639,7 +672,6 @@
                     }
                 });
             }
-
 
         });
     </script>

@@ -76,5 +76,8 @@ Route::group(['middleware' => ['auth', 'view.variable']], function () {
         Route::post('play/{song_id?}', 'Web\InteractionController@play')->name('web.interaction.play');
 
         Route::post('search', 'Web\InteractionController@search')->name('web.interaction.search');
+
+        Route::post('playlist/song/remove', 'Web\PlaylistController@removeSong')->name('playlist.remove.song');
+        Route::post('playlist/remove/{id?}', 'Web\PlaylistController@destroy')->name('playlist.destroy');
     });
 });

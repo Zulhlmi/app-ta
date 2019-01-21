@@ -5,6 +5,11 @@
     <div class="ms_free_download ms_purchase_wrapper">
         <div class="ms_heading">
             <h1>Daftar Lagu</h1>
+            <span class="veiw_all destroyPlaylist" playlist-id="{{ $playlist_id }}">
+                <a href="#" style="font-size: 40px">
+                    -
+                </a>
+            </span>
         </div>
         <div class="album_inner_list">
             <div class="album_list_wrapper">
@@ -19,7 +24,7 @@
                 </ul>
                 @if($listplaylists)
                     @foreach($listplaylists as $key => $listplaylist)
-                        <ul favourite-id="{{ $listplaylist['id'] }}"> {{-- if active add class play_active_song --}}
+                        <ul list-id="{{ $listplaylist['id'] }}"> {{-- if active add class play_active_song --}}
                             <li class="w_tp_song_img" song-json='@json($listplaylist)'>
                                 <a href="#">
                                     <span class="play_no">{{ $key + 1 }}</span>
@@ -52,7 +57,7 @@
                                 </ul>
                             </li>
                             <li class="text-center">
-                                <a song-id="{{ $listplaylist['id'] }}">
+                                <a class="removeSongPlaylist" song-id="{{ $listplaylist['id'] }}" playlist-id="{{ $playlist_id }}">
                                     <span class="ms_close"><img src=" {{ asset('images/svg/close.svg') }}" alt=""></span>
                                 </a>
                             </li>

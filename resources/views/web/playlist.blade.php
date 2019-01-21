@@ -7,7 +7,11 @@
                 <div class="col-lg-12">
                     <div class="ms_heading">
                         <h1>Daftar Putar Anda.</h1>
-                        <span class="veiw_all" data-toggle="modal" data-toggle="modal" data-target="#save_modal"><a href="#">Tambah Daftar Putar</a></span>
+                        <span class="veiw_all" data-toggle="modal" data-target="#save_modal">
+                            <a href="#" style="font-size: 40px">
+                                +
+                            </a>
+                        </span>
                     </div>
                 </div>
                 @if (!empty($playlists))

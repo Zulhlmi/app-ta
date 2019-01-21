@@ -98,7 +98,8 @@ class PlaylistController extends Controller
     {
         $getSongs = PlaylistHelper::getSongByPlaylistId($id);
         return view('web.playlistdetail', [
-            'listplaylists' => $getSongs
+            'listplaylists' => $getSongs,
+            'playlist_id' => $id
         ]);
     }
 
@@ -133,6 +134,25 @@ class PlaylistController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $d = PlaylistHelper::destroy($id);
+        if ($d) {
+            return response()->json(['message' => 'Berhasil Menghapus']);
+        } else {
+            return response()->json(['message' => 'Gagal Menghapus']);
+        }
+    }
+
+    public function removeSong(Request $request)
+    {
+        $remove = PlaylistHelper::removeSong($request->playlist_id, $request->song_id);
+        if ($remove) {
+            return back()->with([
+                'message' => 'berhasil'
+            ]);
+        } else {
+            return back()->with([
+                'message' => 'gagal'
+            ]);
+        }
     }
 }
