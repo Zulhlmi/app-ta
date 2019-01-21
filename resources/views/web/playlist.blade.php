@@ -29,7 +29,7 @@
                                         @php
                                             $p = $playlist->getPlaylist() ? $playlist->getPlaylist()->getItems() : [];
                                         @endphp
-                                        {{ count($p) }}
+                                        Jumlah lagu : {{ count($p) }}
                                     </p>
                                 </div>
                             </div>
